@@ -1,4 +1,4 @@
-package com.vagif;
+package com.vagif.model;
 
 import lombok.Data;
 

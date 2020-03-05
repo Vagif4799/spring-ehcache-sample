@@ -1,5 +1,7 @@
-package com.vagif;
+package com.vagif.service;
 
+import com.vagif.DAO.ProductRepo;
+import com.vagif.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -26,6 +28,7 @@ public class ProductService {
      */
     @Cacheable(value = "productsCache", key = "#p0")
     public Optional<Product> getProductById(int productId) {
+        simulateSlowService();
         return productRepo.findById(productId);
     }
 
@@ -51,6 +54,15 @@ public class ProductService {
     @CacheEvict(value = "productsCache", key = "#p0")
     public void deleteProductById(int productId) {
         productRepo.deleteById(productId);
+    }
+
+    private void simulateSlowService() {
+        try {
+            long time = 3000L;
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
 }
